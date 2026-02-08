@@ -1,0 +1,832 @@
+{
+  "info": {
+    "_postman_id": "27cfd89d-cabb-4f17-81d6-f9495587d91c",
+    "name": "OpenCart_RestAPI_CartModule",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "13296029",
+    "_collection_link": "https://go.postman.co/collection/13296029-27cfd89d-cabb-4f17-81d6-f9495587d91c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "CreateToken",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//Validating the status code\r",
+              "pm.test(\"status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "//Validating the set of status code\r",
+              "pm.test(\"Successfull post status\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "});\r",
+              "//Validating the response status\r",
+              "pm.test(\"response status msg is OK\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "//Validating the header key and its value\r",
+              "pm.test(\"Validating the header key and its value\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "    pm.response.to.have.header(\"Keep-Alive\");\r",
+              "    pm.response.to.have.header(\"X-Powered-By\");\r",
+              "    pm.response.to.have.header(\"Server\");\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "    pm.expect(pm.response.headers.get('Connection')).to.eql('Keep-Alive');\r",
+              "    pm.expect(pm.response.headers.get('Keep-Alive')).to.eql('timeout=5, max=100');\r",
+              "    pm.expect(pm.response.headers.get('X-Powered-By')).to.eql('PHP/8.0.28');\r",
+              "    pm.expect(pm.response.headers.get('Server')).to.eql('Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28');\r",
+              "});\r",
+              "//Validating the Cookie key and its value.\r",
+              "pm.test(\"Validating the Cookie key and its value\",()=>{\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "    pm.expect(pm.cookies.has('currency')).to.be.true;\r",
+              "    pm.expect(pm.cookies.get('currency')).to.eql('USD');\r",
+              "});\r",
+              "//Validating the response Time\r",
+              "pm.test(\"Response Time is less than 2ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response Time is more than 2ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+              "});\r",
+              "//validating the datatypes of json response fields\r",
+              "const jsondata=pm.response.json();\r",
+              " apitoken=jsondata.api_token;\r",
+              "\r",
+              "\r",
+              "pm.test(\"validating the json response fields and its datatypes\",()=>{\r",
+              "   \r",
+              "    pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.success).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.api_token).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.success).to.eql(\"Success: API session successfully started!\");\r",
+              "    pm.expect(jsondata.api_token).to.eql(apitoken);\r",
+              "});\r",
+              "//Extracting the api token values and store it collection variables\r",
+              "pm.collectionVariables.set(\"api_token_value\",jsondata.api_token);\r",
+              "\r",
+              "//validating the Json response schema\r",
+              "var schema={\r",
+              "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"success\": {\r",
+              "      \"type\": \"string\"\r",
+              "    },\r",
+              "    \"api_token\": {\r",
+              "      \"type\": \"string\"\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"success\",\r",
+              "    \"api_token\"\r",
+              "  ]\r",
+              "}\r",
+              "pm.test(\"Validating the Json response schema\",()=>{\r",
+              "  pm.expect(tv4.validate(jsondata,schema)).to.be.true;\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "demo123",
+              "description": "Get it from opencart demo",
+              "type": "text"
+            },
+            {
+              "key": "key",
+              "value": "igmzz6vJCvKnzgNKX0tCPopBscSe7IOnKZTzg34uZVRJxmPLEOmwdVa14A0Ptj4cyyb8Y2w3JlpsxhHifGhCTOwZwI2AwcuJbwgm4ga0wEMKDL75rY2YFLg1Ofyprf7zQaWZJvCKITCITNQUXnFVUnQC4MD3jcTpQGQbaCf0Bsc0hSFaj8nn1quKGRIQ886ANCUbFNvWf3y08ZtIXTQSBy17xsrAczxNu6X7SDSCrIctbgViqCtTEF26w1dy8F2O",
+              "description": "Get it from opencart demo",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/login",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AddProductTocart",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"ProductId\",\"46\");\r",
+              "pm.collectionVariables.set(\"Quantity\",\"2\");"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//Validating the status code\r",
+              "pm.test(\"Status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "//Validating the set of status code\r",
+              "pm.test(\"Successfull post status\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "});\r",
+              "//Validating the response status \r",
+              "pm.test(\"Response status msg is OK\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "//Validating the header key and its value.\r",
+              "pm.test(\"Validating the header key and its value\",()=>{\r",
+              "pm.response.to.have.header(\"Content-Type\");\r",
+              "pm.response.to.have.header(\"Connection\");\r",
+              "pm.response.to.have.header(\"Keep-Alive\");\r",
+              "pm.response.to.have.header(\"X-Powered-By\");\r",
+              "pm.response.to.have.header(\"Server\");\r",
+              "pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "pm.expect(pm.response.headers.get('Connection')).to.eql('Keep-Alive');\r",
+              "pm.expect(pm.response.headers.get('X-Powered-By')).to.eql('PHP/8.0.28');\r",
+              "pm.expect(pm.response.headers.get('Server')).to.eql('Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28');\r",
+              "});\r",
+              "//Validating the cookie key and its value\r",
+              "var cookievalue=pm.cookies.get('OCSESSID');\r",
+              "pm.test(\"Validating the cookie key and its value\",()=>{\r",
+              "    pm.expect(pm.cookies.has('currency')).to.be.true;\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "    pm.expect(pm.cookies.has('OCSESSID')).to.be.true;\r",
+              "    pm.expect(pm.cookies.get('currency')).to.eql('USD');\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "    pm.expect(pm.cookies.get('OCSESSID')).to.eql(cookievalue);\r",
+              "});\r",
+              "\r",
+              "//Validating the response time\r",
+              "pm.test(\"Response time is less than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "});\r",
+              "pm.test(\"Response time is more than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+              "});\r",
+              "\r",
+              "//`Validating the Json Response field and its datatypes`\r",
+              "const Jsondata= pm.response.json();\r",
+              "pm.test(\"Validating the Json Response field and its datatypes\",()=>{\r",
+              "    pm.expect(Jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(Jsondata.success).to.be.a(\"String\");\r",
+              "    pm.expect(Jsondata.success).to.eql(\"Success: You have modified your shopping cart!\");\r",
+              "});\r",
+              "//Validating the schema of Json response\r",
+              "var schema={\r",
+              "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"success\": {\r",
+              "      \"type\": \"string\"\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"success\"\r",
+              "  ]\r",
+              "}\r",
+              "pm.test(\"Validating the schema of Json response\",()=>{\r",
+              "    pm.expect(tv4.validate(Jsondata,schema)).to.be.true;\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "product_id",
+              "value": "{{ProductId}}",
+              "type": "text"
+            },
+            {
+              "key": "quantity",
+              "value": "{{Quantity}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/add",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "add"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CartContent",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//Validating the status code\r",
+              "pm.test(\"status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "//Validating the set of status code\r",
+              "pm.test(\"Successfull post request\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "});\r",
+              "//Validating the response status\r",
+              "pm.test(\"Validating the response status\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "//Validating the header key and its value\r",
+              "pm.test(\"Validating the header key and its value\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "    pm.response.to.have.header(\"X-Powered-By\");\r",
+              "    pm.response.to.have.header(\"Server\");\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "    pm.expect(pm.response.headers.get('Connection')).to.eql('Keep-Alive');\r",
+              "    pm.expect(pm.response.headers.get('Server')).to.eql('Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28');\r",
+              "    pm.expect(pm.response.headers.get('X-Powered-By')).to.eql('PHP/8.0.28');\r",
+              "});\r",
+              "//Validating the cookie key and its value\r",
+              "var cookievalue=pm.cookies.get('OCSESSID');\r",
+              "pm.test(\"Validating the cookie key and its value\",()=>{\r",
+              "    pm.expect(pm.cookies.has('currency')).to.be.true;\r",
+              "   pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "    pm.expect(pm.cookies.has('OCSESSID')).to.be.true;\r",
+              "   pm.expect(pm.cookies.get('currency')).to.eql('USD');\r",
+              "   pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "   pm.expect(pm.cookies.get('OCSESSID')).to.eql(cookievalue);\r",
+              "});\r",
+              "console.log(\"Cookies is\"+pm.cookies.get('OCSESSID'));\r",
+              "//Validating the response time\r",
+              "pm.test(\"Response time is less than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              " });\r",
+              "pm.test(\"Response time is more than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+              "});\r",
+              "//Validating the Json response fields and its datatypes\r",
+              "var jsondata=JSON.parse(responseBody);\r",
+              "\r",
+              "pm.collectionVariables.set(\"Cart_id_key\",jsondata.products[0].cart_id);\r",
+              "\r",
+              "pm.test(\"Validating the Json response fields and its datatypes\",()=>{\r",
+              "    pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.products).to.be.an(\"array\");\r",
+              "    pm.expect(jsondata.products[0].cart_id).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].product_id).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].name).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].model).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].option).to.be.an(\"array\");\r",
+              "    pm.expect(jsondata.products[0].quantity).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].stock).to.be.a(\"Boolean\");\r",
+              "    pm.expect(jsondata.products[0].shipping).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].price).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].total).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].reward).to.be.a(\"Number\");\r",
+              "    pm.expect(jsondata.vouchers).to.be.an(\"array\");\r",
+              "    pm.expect(jsondata.totals).to.be.an(\"array\");\r",
+              "    pm.expect(jsondata.totals[0].title).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[0].text).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[1].title).to.be.a(\"String\");\r",
+              "     pm.expect(jsondata.totals[1].text).to.be.a(\"String\");\r",
+              "   \r",
+              "    pm.expect(jsondata.products[0].product_id).to.eql(pm.collectionVariables.get(\"ProductId\"));\r",
+              "    pm.expect(jsondata.products[0].quantity).to.eql(''+pm.collectionVariables.get(\"Quantity\")+'');\r",
+              "    pm.expect(jsondata.products[0].cart_id).to.eql(pm.collectionVariables.get(\"Cart_id_key\"));\r",
+              "});\r",
+              "\r",
+              "var schema={\r",
+              "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"products\": {\r",
+              "      \"type\": \"array\",\r",
+              "      \"items\": [\r",
+              "        {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"cart_id\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"product_id\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"name\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"model\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"option\": {\r",
+              "              \"type\": \"array\",\r",
+              "              \"items\": {}\r",
+              "            },\r",
+              "            \"quantity\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"stock\": {\r",
+              "              \"type\": \"boolean\"\r",
+              "            },\r",
+              "            \"shipping\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"price\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"total\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"reward\": {\r",
+              "              \"type\": \"integer\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"cart_id\",\r",
+              "            \"product_id\",\r",
+              "            \"name\",\r",
+              "            \"model\",\r",
+              "            \"option\",\r",
+              "            \"quantity\",\r",
+              "            \"stock\",\r",
+              "            \"shipping\",\r",
+              "            \"price\",\r",
+              "            \"total\",\r",
+              "            \"reward\"\r",
+              "          ]\r",
+              "        }\r",
+              "      ]\r",
+              "    },\r",
+              "    \"vouchers\": {\r",
+              "      \"type\": \"array\",\r",
+              "      \"items\": {}\r",
+              "    },\r",
+              "    \"totals\": {\r",
+              "      \"type\": \"array\",\r",
+              "      \"items\": [\r",
+              "        {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"title\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"text\": {\r",
+              "              \"type\": \"string\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"title\",\r",
+              "            \"text\"\r",
+              "          ]\r",
+              "        },\r",
+              "        {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"title\": {\r",
+              "              \"type\": \"string\"\r",
+              "            },\r",
+              "            \"text\": {\r",
+              "              \"type\": \"string\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"title\",\r",
+              "            \"text\"\r",
+              "          ]\r",
+              "        }\r",
+              "      ]\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"products\",\r",
+              "    \"vouchers\",\r",
+              "    \"totals\"\r",
+              "  ]\r",
+              "}\r",
+              "\r",
+              "//Validate the JSON response schema\r",
+              "pm.test(\"Validate the JSON response schema\",()=>{\r",
+              "    pm.expect(tv4.validate(jsondata,schema)).to.be.true;\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "product_id",
+              "value": "{{ProductId}}",
+              "type": "text"
+            },
+            {
+              "key": "",
+              "value": "",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/products",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Edit Cart Content/Edit Product Quantity from the cart",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"Quantity\",10);"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//Validating the status code\r",
+              "pm.test(\"Validating the status code\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "//Validating the set of response status\r",
+              "pm.test(\"Validating the set of response status\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "});\r",
+              "//Validating the Response status\r",
+              "pm.test(\"Resposne MSG is OK\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "//Validating the header key and it value\r",
+              "pm.test(\"Validating the header key and it value\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "    pm.response.to.have.header(\"X-Powered-By\");\r",
+              "    pm.response.to.have.header(\"Server\");\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json')\r",
+              "    pm.expect(pm.response.headers.get('Connection')).to.eql('Keep-Alive')\r",
+              "    pm.expect(pm.response.headers.get('X-Powered-By')).to.eql('PHP/8.0.28')\r",
+              "    pm.expect(pm.response.headers.get('Server')).to.eql('Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28');\r",
+              "});\r",
+              "//Validating the cookie key and its value\r",
+              "var cookievalue=pm.cookies.get('OCSESSID');\r",
+              "pm.test(\"Validating the cookie key and its value\",()=>{\r",
+              "    pm.expect(pm.cookies.has('currency')).to.be.true;\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "    pm.expect(pm.cookies.has('OCSESSID')).to.be.true;\r",
+              "    pm.expect(pm.cookies.get('currency')).to.eql('USD');\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "    pm.expect(pm.cookies.get('OCSESSID')).to.eql(cookievalue);\r",
+              "});\r",
+              "\r",
+              "//Validating the response time\r",
+              "pm.test(\"Response is less than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "});\r",
+              "pm.test(\"Response is more than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+              "});\r",
+              "//Validating the Json response fields and its datatypes\r",
+              "const Jsondata=pm.response.json();\r",
+              "successmsg=Jsondata.success;\r",
+              "console.log(\"Success MSG is \"+successmsg)\r",
+              "pm.test(\"Validating the Json response fields and its datatypes\",()=>{\r",
+              "    pm.expect(Jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(Jsondata.success).to.be.a(\"String\");\r",
+              "    pm.expect(Jsondata.success).to.eql(successmsg)\r",
+              "});\r",
+              "//Validating the schema of JSON response\r",
+              "var schema={\r",
+              "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"success\": {\r",
+              "      \"type\": \"string\"\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"success\"\r",
+              "  ]\r",
+              "}\r",
+              "pm.test(\"Validating the schema of JSON response\",()=>{\r",
+              "    pm.expect(tv4.validate(Jsondata,schema)).to.be.true;\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "key",
+              "value": "{{Cart_id_key}}",
+              "type": "text"
+            },
+            {
+              "key": "quantity",
+              "value": "{{Quantity}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/edit",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "edit"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Remove Product from cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//Validating the status code\r",
+              "pm.test(\"Status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "//Validating the set of status code\r",
+              "pm.test(\"Validating the set of status code\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "});\r",
+              "//Validating the response status\r",
+              "pm.test(\"Successfull Post request\",()=>{\r",
+              "pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "//Validating the header key and its value\r",
+              "pm.test(\"Validating the header key and its value\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "    pm.response.to.have.header(\"X-Powered-By\");\r",
+              "    pm.response.to.have.header(\"Server\");\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "    pm.expect(pm.response.headers.get('Connection')).to.eql('Keep-Alive');\r",
+              "    pm.expect(pm.response.headers.get('X-Powered-By')).to.eql('PHP/8.0.28');\r",
+              "    pm.expect(pm.response.headers.get('Server')).to.eql('Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28');\r",
+              "});\r",
+              "//Validating the cookie key and its value\r",
+              "var cookievalue=pm.cookies.get('OCSESSID');\r",
+              "pm.test(\"Validating the cookie key and its value\",()=>{\r",
+              "    pm.expect(pm.cookies.has('currency')).to.be.true;\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "    pm.expect(pm.cookies.has('OCSESSID')).to.be.true;\r",
+              "    pm.expect(pm.cookies.get('currency')).to.eql('USD');\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "    pm.expect(pm.cookies.get('OCSESSID')).to.eql(cookievalue);\r",
+              "});\r",
+              "\r",
+              "//Validating the response time\r",
+              "pm.test(\"Response is less than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "});\r",
+              "pm.test(\"Response is more than 1ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+              "});\r",
+              "//Validating the Response Json fields and its datatype\r",
+              "const jsondata=pm.response.json();\r",
+              "MSG=jsondata.success;\r",
+              "pm.test(\"Validating the Response Json fields and its datatype\",()=>{\r",
+              "pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "pm.expect(jsondata.success).to.be.a(\"String\");\r",
+              "pm.expect(jsondata.success).to.eql(MSG);\r",
+              "});\r",
+              "//Validating the JSON Response schems\r",
+              "var schema={\r",
+              "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"success\": {\r",
+              "      \"type\": \"string\"\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"success\"\r",
+              "  ]\r",
+              "}\r",
+              "pm.test(\"Validating the JSON Response schema\",()=>{\r",
+              "    pm.expect(tv4.validate(jsondata,schema)).to.be.true;\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "key",
+              "value": "{{Cart_id_key}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/remove",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "remove"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "IP",
+      "value": "192.168.29.31",
+      "type": "string"
+    },
+    {
+      "key": "BaseUrl",
+      "value": "http://{{IP}}/opencart/upload/index.php?route=",
+      "type": "string"
+    },
+    {
+      "key": "api_token_value",
+      "value": ""
+    },
+    {
+      "key": "ProductId",
+      "value": ""
+    },
+    {
+      "key": "Quantity",
+      "value": ""
+    },
+    {
+      "key": "Cart_id_key",
+      "value": ""
+    }
+  ]
+}
