@@ -1,0 +1,675 @@
+{
+  "info": {
+    "_postman_id": "417244ec-f61f-4503-b2af-e80a7c59f98f",
+    "name": "OpenCart_Collection_Module",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "13296029",
+    "_collection_link": "https://go.postman.co/collection/13296029-417244ec-f61f-4503-b2af-e80a7c59f98f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "CreateToken",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//Validating the status code\r",
+              "pm.test(\"status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "//Validating the set of status code\r",
+              "pm.test(\"Successfull post status\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "});\r",
+              "//Validating the response status\r",
+              "pm.test(\"response status msg is OK\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "//Validating the header key and its value\r",
+              "pm.test(\"Validating the header key and its value\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "    pm.response.to.have.header(\"Keep-Alive\");\r",
+              "    pm.response.to.have.header(\"X-Powered-By\");\r",
+              "    pm.response.to.have.header(\"Server\");\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+              "    pm.expect(pm.response.headers.get('Connection')).to.eql('Keep-Alive');\r",
+              "    pm.expect(pm.response.headers.get('Keep-Alive')).to.eql('timeout=5, max=100');\r",
+              "    pm.expect(pm.response.headers.get('X-Powered-By')).to.eql('PHP/8.0.28');\r",
+              "    pm.expect(pm.response.headers.get('Server')).to.eql('Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28');\r",
+              "});\r",
+              "//Validating the Cookie key and its value.\r",
+              "pm.test(\"Validating the Cookie key and its value\",()=>{\r",
+              "    pm.expect(pm.cookies.has('language')).to.be.true;\r",
+              "    pm.expect(pm.cookies.get('language')).to.eql('en-gb');\r",
+              "    pm.expect(pm.cookies.has('currency')).to.be.true;\r",
+              "    pm.expect(pm.cookies.get('currency')).to.eql('USD');\r",
+              "});\r",
+              "//Validating the response Time\r",
+              "pm.test(\"Response Time is less than 2ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response Time is more than 2ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+              "});\r",
+              "//validating the datatypes of json response fields\r",
+              "const jsondata=pm.response.json();\r",
+              " apitoken=jsondata.api_token;\r",
+              "\r",
+              "\r",
+              "pm.test(\"validating the json response fields and its datatypes\",()=>{\r",
+              "   \r",
+              "    pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.success).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.api_token).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.success).to.eql(\"Success: API session successfully started!\");\r",
+              "    pm.expect(jsondata.api_token).to.eql(apitoken);\r",
+              "});\r",
+              "//Extracting the api token values and store it collection variables\r",
+              "pm.collectionVariables.set(\"api_token_value\",jsondata.api_token);\r",
+              "\r",
+              "//validating the Json response schema\r",
+              "var schema={\r",
+              "  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"success\": {\r",
+              "      \"type\": \"string\"\r",
+              "    },\r",
+              "    \"api_token\": {\r",
+              "      \"type\": \"string\"\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"success\",\r",
+              "    \"api_token\"\r",
+              "  ]\r",
+              "}\r",
+              "pm.test(\"Validating the Json response schema\",()=>{\r",
+              "  pm.expect(tv4.validate(jsondata,schema)).to.be.true;\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "demo123",
+              "description": "Get it from opencart demo",
+              "type": "text"
+            },
+            {
+              "key": "key",
+              "value": "igmzz6vJCvKnzgNKX0tCPopBscSe7IOnKZTzg34uZVRJxmPLEOmwdVa14A0Ptj4cyyb8Y2w3JlpsxhHifGhCTOwZwI2AwcuJbwgm4ga0wEMKDL75rY2YFLg1Ofyprf7zQaWZJvCKITCITNQUXnFVUnQC4MD3jcTpQGQbaCf0Bsc0hSFaj8nn1quKGRIQ886ANCUbFNvWf3y08ZtIXTQSBy17xsrAczxNu6X7SDSCrIctbgViqCtTEF26w1dy8F2O",
+              "description": "Get it from opencart demo",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/login",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add_Product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//validating the status\r",
+              "pm.test(\"Status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "pm.test(\"successfull post request\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "})\r",
+              "pm.test(\"Status message is Valid\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "\r",
+              "//Validating the headers\r",
+              "pm.test(\"Header key is avilable\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Keep-Alive\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "\r",
+              "});\r",
+              "pm.test(\"Header value is available\",()=>{\r",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+              "    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"Keep-Alive\");\r",
+              "});\r",
+              "//Validating the cookies\r",
+              "pm.test(\"cookies key ia avilable\",()=>{\r",
+              "    pm.expect(pm.cookies.has(\"language\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"OCSESSID\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"currency\")).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"cookie value is available\",()=>{\r",
+              "    pm.expect(pm.cookies.get(\"language\")).to.eql(\"en-gb\");\r",
+              "    pm.expect(pm.cookies.get(\"OCSESSID\")).to.eql(\"636307544eb167268722d9756b\");\r",
+              "    pm.expect(pm.cookies.get(\"currency\")).to.eql(\"USD\");\r",
+              "\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"response time is greater than or less than specified range\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "    //pm.expect(pm.response.responseTime).to.be.above(500);\r",
+              "});\r",
+              "\r",
+              "//var jsondata=JSON.parse(responseBody);\r",
+              "const jsondata=pm.response.json();\r",
+              "\r",
+              "pm.test(\"value datatypes are valid\",()=>{\r",
+              "    pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.success).to.be.a(\"String\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response values are matched\",()=>{\r",
+              "    pm.expect(jsondata.success).to.eql(\"Success: You have modified your shopping cart!\");\r",
+              "})\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// pm.collectionVariables.set(\"productID\",\"40\");\r",
+              "// pm.collectionVariables.set(\"Quantity\",10);\r",
+              "pm.collectionVariables.set(\"productID\",40)\r",
+              "pm.collectionVariables.set(\"Quantity\",10);\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "product_id",
+              "value": "{{productID}}",
+              "type": "text"
+            },
+            {
+              "key": "quantity",
+              "value": "{{Quantity}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/add",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "add"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cart_Content",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//validating the status\r",
+              "pm.test(\"Status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "pm.test(\"successfull post request\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "})\r",
+              "pm.test(\"Status message is Valid\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "\r",
+              "//Validating the headers\r",
+              "pm.test(\"Header key is avilable\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Keep-Alive\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "});\r",
+              "pm.test(\"Header value is available\",()=>{\r",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+              "    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"Keep-Alive\");\r",
+              "});\r",
+              "//Validating the cookies\r",
+              "pm.test(\"cookies key ia avilable\",()=>{\r",
+              "    pm.expect(pm.cookies.has(\"language\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"OCSESSID\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"currency\")).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"cookie value is available\",()=>{\r",
+              "    pm.expect(pm.cookies.get(\"language\")).to.eql(\"en-gb\");\r",
+              "    pm.expect(pm.cookies.get(\"OCSESSID\")).to.eql(\"636307544eb167268722d9756b\");\r",
+              "    pm.expect(pm.cookies.get(\"currency\")).to.eql(\"USD\");\r",
+              "\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response time is greater than or less than specified range\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "   // pm.expect(pm.response.responseTime).to.be.above(500);\r",
+              "});\r",
+              "\r",
+              "//var jsondata=JSON.parse(responseBody);\r",
+              "const jsondata=pm.response.json();\r",
+              "pm.test(\"value datatypes are valid\",()=>{\r",
+              "    pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.products).to.be.an(\"Array\");\r",
+              "    pm.expect(jsondata.products[0]).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.products[0].cart_id).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].product_id).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].name).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].model).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].option).to.be.an(\"Array\");\r",
+              "    pm.expect(jsondata.products[0].quantity).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].stock).to.be.a(\"boolean\");\r",
+              "    pm.expect(jsondata.products[0].shipping).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].price).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].total).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.products[0].reward).to.be.a(\"number\");\r",
+              "    pm.expect(jsondata.totals).to.be.an(\"Array\");\r",
+              "    pm.expect(jsondata.totals[0]).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.totals[1]).to.be.a(\"Object\");\r",
+              "    pm.expect(jsondata.totals[2]).to.be.a(\"Object\");\r",
+              "    pm.expect(jsondata.totals[3]).to.be.a(\"Object\");\r",
+              "    pm.expect(jsondata.totals[0].title).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[1].title).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[2].title).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[3].title).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[0].text).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[1].text).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[2].text).to.be.a(\"String\");\r",
+              "    pm.expect(jsondata.totals[3].text).to.be.a(\"String\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"product Id is matched with response\",()=>{\r",
+              "    pm.expect(jsondata.products[0].product_id).to.eql(''+pm.collectionVariables.get(\"productID\")+'');\r",
+              "    pm.expect(jsondata.products[0].quantity).to.eql(''+pm.collectionVariables.get(\"Quantity\")+'');\r",
+              "\r",
+              "});\r",
+              "\r",
+              "pm.collectionVariables.set(\"cart_id\",jsondata.products[0].cart_id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "product_id",
+              "value": "{{productID}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/products",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Edit_cart_content/Edit_Product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//validating the status\r",
+              "pm.test(\"Status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "pm.test(\"successfull post request\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "})\r",
+              "pm.test(\"Status message is Valid\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "\r",
+              "//Validating the headers\r",
+              "pm.test(\"Header key is avilable\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Keep-Alive\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "});\r",
+              "pm.test(\"Header value is available\",()=>{\r",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+              "    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"Keep-Alive\");\r",
+              "});\r",
+              "//Validating the cookies\r",
+              "pm.test(\"cookies key ia avilable\",()=>{\r",
+              "    pm.expect(pm.cookies.has(\"language\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"OCSESSID\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"currency\")).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"cookie value is available\",()=>{\r",
+              "    pm.expect(pm.cookies.get(\"language\")).to.eql(\"en-gb\");\r",
+              "    pm.expect(pm.cookies.get(\"OCSESSID\")).to.eql(\"636307544eb167268722d9756b\");\r",
+              "    pm.expect(pm.cookies.get(\"currency\")).to.eql(\"USD\");\r",
+              "\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response time is greater than or less than specified range\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "   // pm.expect(pm.response.responseTime).to.be.above(500);\r",
+              "});\r",
+              "\r",
+              "//var jsondata=JSON.parse(responseBody);\r",
+              "const jsondata=pm.response.json();\r",
+              "pm.test(\"data type values are valid\",()=>{\r",
+              "    pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.success).to.be.a(\"String\");\r",
+              "});\r",
+              "pm.test(\"response values met with expected\",()=>{\r",
+              "    pm.expect(jsondata.success).to.eql(\"Success: You have modified your shopping cart!\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "key",
+              "value": "{{cart_id}}",
+              "type": "text"
+            },
+            {
+              "key": "quantity",
+              "value": "20",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/edit",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "edit"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Remove_Product_From_Cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//validating the status\r",
+              "pm.test(\"Status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "pm.test(\"successfull post request\",()=>{\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+              "})\r",
+              "pm.test(\"Status message is Valid\",()=>{\r",
+              "    pm.response.to.have.status(\"OK\");\r",
+              "});\r",
+              "\r",
+              "//Validating the headers\r",
+              "pm.test(\"Header key is avilable\",()=>{\r",
+              "    pm.response.to.have.header(\"Content-Type\");\r",
+              "    pm.response.to.have.header(\"Keep-Alive\");\r",
+              "    pm.response.to.have.header(\"Connection\");\r",
+              "});\r",
+              "pm.test(\"Header value is available\",()=>{\r",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+              "    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"Keep-Alive\");\r",
+              "});\r",
+              "//Validating the cookies\r",
+              "pm.test(\"cookies key ia avilable\",()=>{\r",
+              "    pm.expect(pm.cookies.has(\"language\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"OCSESSID\")).to.be.true;\r",
+              "    pm.expect(pm.cookies.has(\"currency\")).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"cookie value is available\",()=>{\r",
+              "    pm.expect(pm.cookies.get(\"language\")).to.eql(\"en-gb\");\r",
+              "    pm.expect(pm.cookies.get(\"OCSESSID\")).to.eql(\"636307544eb167268722d9756b\");\r",
+              "    pm.expect(pm.cookies.get(\"currency\")).to.eql(\"USD\");\r",
+              "\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response time is greater than or less than specified range\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "   // pm.expect(pm.response.responseTime).to.be.above(500);\r",
+              "});\r",
+              "\r",
+              "//var jsondata=JSON.parse(responseBody);\r",
+              "const jsondata=pm.response.json();\r",
+              "pm.test(\"data types values are valid\",()=>{\r",
+              "    pm.expect(jsondata).to.be.an(\"Object\");\r",
+              "    pm.expect(jsondata.success).to.be.a(\"String\");\r",
+              "});\r",
+              "pm.test(\"response values are matched with expected\",()=>{\r",
+              "    pm.expect(jsondata.success).to.eql(\"Success: You have modified your shopping cart!\");\r",
+              "})\r",
+              "\r",
+              "pm.collectionVariables.unset(\"api_token\");\r",
+              "pm.collectionVariables.unset(\"productID\");\r",
+              "pm.collectionVariables.unset(\"Quantity\");\r",
+              "pm.collectionVariables.unset(\"cart_id\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "{{api_token_value}}",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_token",
+              "type": "string"
+            },
+            {
+              "key": "in",
+              "value": "query",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "key",
+              "value": "{{cart_id}}",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseUrl}}api/cart/remove",
+          "host": [
+            "{{BaseUrl}}api"
+          ],
+          "path": [
+            "cart",
+            "remove"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "IP",
+      "value": ""
+    },
+    {
+      "key": "BaseUrl",
+      "value": ""
+    },
+    {
+      "key": "api_token_value",
+      "value": ""
+    }
+  ]
+}
